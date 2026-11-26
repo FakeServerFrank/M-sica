@@ -34,7 +34,7 @@ object EqEngine {
             info = EqInfo(n, r[0].toInt(), r[1].toInt(),
                 (0 until n).map { e.getCenterFreq(it.toShort()) / 1000 })
             e.release()
-        } catch (_: Throwable) { }
+        } catch (t: Throwable) { }
         val n = info?.bands ?: 0
         val saved = (p.getString("levels", "") ?: "").split(",").mapNotNull { it.toIntOrNull() }
         levels.clear()
@@ -51,7 +51,7 @@ object EqEngine {
             effects[session] = e
             push(e)
             connected = effects.size
-        } catch (_: Throwable) { }
+        } catch (t: Throwable) { }
     }
 
     @Synchronized
@@ -63,8 +63,8 @@ object EqEngine {
     private fun push(e: Equalizer) {
         try {
             levels.forEachIndexed { i, l -> e.setBandLevel(i.toShort(), l.toShort()) }
-            e.enabled = enabled
-        } catch (_: Throwable) { }
+            e.setEnabled(enabled)
+        } catch (t: Throwable) { }
     }
 
     @Synchronized
